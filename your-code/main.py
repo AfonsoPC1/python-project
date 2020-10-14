@@ -150,31 +150,43 @@ INIT_GAME_STATE = {
     "target_room": outside
 }
 
-def voice():
-    
+def voice(keywords):
+    """
+    takes in a list of keywords, tries to return the one that is said by the user
+    """
+
     # Initialize recognizer class (for recognizing the speech)
 
     r = sr.Recognizer()
     
     # Words that sphinx should listen closely for. 0-1 is the sensitivity
     # of the wake word.
-    keywords = [("examine", 1), ("explore", 1), ]
-
+    # eg.: keywords = [("examine", 1), ("explore", 1), ]
+    # creates list of tuples from the passed keywords
+    tuple_keywords = []
+    for keyword in keywords:
+        key_prm = (keyword, 1)
+        tuple_keywords.append(key_prm)            
+    
+    
     # Reading Microphone as source
     # listening the speech and store in audio_text variable
 
     with sr.Microphone() as source:
-        print("Talk")
-        # listen for 1 second and create the ambient noise energy level  
-        r.adjust_for_ambient_noise(source, duration=1)  
-        print("Say something!") 
+        print("Please wait. Calibrating microphone...")   
+    # listen for 5 seconds and create the ambient noise energy level   
+        r.adjust_for_ambient_noise(source, duration=5)  
+        r.dynamic_energy_threshold = True  
+    # request voice command, record audio
+        print("State command") 
         audio_text = r.listen(source,phrase_time_limit=5)
         print("Time over, thanks")
     # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
-    
+        print(r.recognize_sphinx(audio_text, "en-us", tuple_keywords))
         try:
             # using google speech recognition
-            return r.recognize_google(audio_text)
+            # print("I think you said:"+r.recognize_sphinx(audio_text, tuple_keywords))
+            return r.recognize_sphinx(audio_text, tuple_keywords)
         except:
             print("Sorry, I did not get that")
 
@@ -220,10 +232,10 @@ def play_room(room):
     else:
         print("You are now in " + room["name"])
         read("You are now in " + room["name"])    
-        read("What would you like to do? Type 'explore' or 'examine'?",False)
+        read("What would you like to do? Type 'explore' or 'examine'?",True)
         #intended_action = input("What would you like to do? Type 'explore' or 'examine'?").strip()
         print("What would you like to do? Type 'explore' or 'examine'?")
-        intended_action = voice()
+        intended_action = voice(['explore','examine'])
         if intended_action == "explore":
             explore_room(room)
             play_room(room)
