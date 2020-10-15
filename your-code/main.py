@@ -168,15 +168,22 @@ def voice():
         r.adjust_for_ambient_noise(source, duration=0.5)
         r.dynamic_energy_threshold=True
         print("Talk")
-        audio_text = r.listen(source,timeout=2)
+        try:
+            audio_text = r.listen(source,timeout=10)
+            return r.recognize_google(audio_text)
+        except :
+            print("Sorry, I did not get that")
+            read("Please type what you would you like to do? Type '0' to explore' or '1' to 'examine'?")
+            return input("Please type what you would you like to do? Type '0' to explore' or '1' to 'examine'?").strip()
         print("Time over, thanks")
     # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
         
-        try:
+        #try:
             # using google speech recognition
-            return r.recognize_google(audio_text)
-        except:
-            print("Sorry, I did not get that")
+         #   return r.recognize_google(audio_text)
+        #except:
+         #   print("Sorry, I did not get that")
+          #  return input("Please type what you would you like to do? Type '0' to explore' or '1' to 'examine'?").strip()
 
 def read(text, hold = True):
     """
@@ -204,7 +211,7 @@ def start_game():
     Start the game
     """
     print("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before. You don't remember why you are here and what had happened before. You feel some unknown danger is approaching and you must get out of the house, NOW!")
-    read("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before. You don't remember why you are here and what had happened before. You feel some unknown danger is approaching and you must get out of the house, NOW!")
+    #read("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before. You don't remember why you are here and what had happened before. You feel some unknown danger is approaching and you must get out of the house, NOW!")
     play_room(game_state["current_room"])
 
 def play_room(room):
