@@ -176,11 +176,19 @@ def voice():
         print("Talk")
         try:
             audio_text = r.listen(source,timeout=10)
-            return r.recognize_google(audio_text)
+            recognized_text = r.recognize_google(audio_text)
+            #if recognized_text is None
+            if recognized_text == "0" or recognized_text == "1": # check if recognized text makes sense
+                return r.recognize_google(audio_text)
+            else: # request manual input if not
+                print("Sorry, I did not get that")    
+                read("Sorry, I did not get that", False)
+                return input("If you want to 'explore' type '0', if you want to 'examine' type '1'.").strip()
         except :
             print("Sorry, I did not get that")
-            read("Please type what you would you like to do? Type '0' to explore' or '1' to 'examine'?")
-            return input("Please type what you would you like to do? Type '0' to explore' or '1' to 'examine'?").strip()
+            read("Sorry, I did not get that", False)
+            #read("Please type what you would you like to do? Type '0' to explore' or '1' to 'examine'?")
+            return input("If you want to 'explore' type '0', if you want to 'examine' type '1'.").strip()
         print("Time over, thanks")
     # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
         
@@ -229,21 +237,22 @@ def play_room(room):
     """
     game_state["current_room"] = room
     if(game_state["current_room"] == game_state["target_room"]):
-        print("Congrats! You escaped Ironhack, you are free to go to your bed. More python will be wating for you tomorrow!")
-        read("Congrats! You escaped Ironhack, you are free to go to your bed. More python will be wating for you tomorrow!")
+        print("Congrats! You escaped Ironhack, you are free to go to your bed. More python will be waiting for you tomorrow!")
+        read("Congrats! You escaped Ironhack, you are free to go to your bed. More python will be waiting for you tomorrow!")
+        display(Image(filename="Images//bed.jpg"))
         playsound.playsound('sound//stage-clear.wav',True)
     else:
         print("You are now in " + room["name"])
-        #read("You are now in " + room["name"]) 
-        print("What would you like to do? Say '0' if you want to 'explore' or '1' if you want to 'examine'?")
-        read("What would you like to do? Say '0' if you want to 'explore' or '1' if you want to 'examine'?",True)
+        read("You are now in " + room["name"]) 
+        print("If you want to 'explore' say '0', if you want to 'examine' say '1'.")
+        #read("If you want to 'explore' say '0', if you want to 'examine' say '1'.",True)
         #intended_action = input("What would you like to do? Type '0' to 'explore' or '1' to 'examine'?").strip()
         intended_action = voice()  
         if intended_action == '0':
             explore_room(room)
             play_room(room)
         elif intended_action == '1':
-            read("What would you like to examine? Please type.",False)
+            #read("What would you like to examine? Please type.",False)
             examine_item(input("What would you like to examine? Please type: ").strip())
         else:
             print("Not sure what you mean.")
