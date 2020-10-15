@@ -151,27 +151,27 @@ INIT_GAME_STATE = {
 }
 
 def voice():
-    
-    # Initialize recognizer class (for recognizing the speech)
+    """
+    takes in a list of keywords, tries to return the one that is said by the user
+    """
+
+   
+# Initialize recognizer class (for recognizing the speech)
 
     r = sr.Recognizer()
-    
-    # Words that sphinx should listen closely for. 0-1 is the sensitivity
-    # of the wake word.
-    keywords = [("examine", 1), ("explore", 1), ]
 
-    # Reading Microphone as source
-    # listening the speech and store in audio_text variable
+# Reading Microphone as source
+# listening the speech and store in audio_text variable
 
     with sr.Microphone() as source:
+        print('Wait')
+        r.adjust_for_ambient_noise(source, duration=0.5)
+        r.dynamic_energy_threshold=True
         print("Talk")
-        # listen for 1 second and create the ambient noise energy level  
-        r.adjust_for_ambient_noise(source, duration=1)  
-        print("Say something!") 
-        audio_text = r.listen(source,phrase_time_limit=5)
+        audio_text = r.listen(source,timeout=2)
         print("Time over, thanks")
     # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
-    
+        
         try:
             # using google speech recognition
             return r.recognize_google(audio_text)
@@ -220,20 +220,20 @@ def play_room(room):
         playsound.playsound('sound//stage-clear.wav',True)
     else:
         print("You are now in " + room["name"])
-        read("You are now in " + room["name"])    
-        read("What would you like to do? Type 'explore' or 'examine'?",False)
-        intended_action = input("What would you like to do? Type 'explore' or 'examine'?").strip()
-        print("What would you like to do? Type 'explore' or 'examine'?")
-        #intended_action = voice()
-        if intended_action == "explore":
+        read("You are now in " + room["name"]) 
+        print("What would you like to do? Say '0' if you want to 'explore' or '1' if you want to 'examine'?")
+        read("What would you like to do? Say '0' if you want to 'explore' or '1' if you want to 'examine'?",True)
+        #intended_action = input("What would you like to do? Type 'explore' or 'examine'?").strip()
+        intended_action = voice()  
+        if intended_action == '0':
             explore_room(room)
             play_room(room)
-        elif intended_action == "examine":
+        elif intended_action == '1':
             read("What would you like to examine?",False)
             examine_item(input("What would you like to examine?").strip())
         else:
-            print("Not sure what you mean. Type 'explore' or 'examine'.")
-            read("Not sure what you mean. Type 'explore' or 'examine'.")
+            print("Not sure what you mean.")
+            read("Not sure what you mean.")
             play_room(room)
         linebreak()
 
@@ -269,7 +269,7 @@ def examine_item(item_name):
     current_room = game_state["current_room"]
     next_room = ""
     output = None
-    
+    affirmative = ["Yes","yes","y","Y","yeah","affirmative"] #variations of affirmative user inputs   
     for item in object_relations[current_room["name"]]:
         if(item["name"] == item_name):
             output = "You examine " + item_name + ". "
@@ -301,7 +301,7 @@ def examine_item(item_name):
         read("The item you requested is not found in the current room.")
     if(next_room):
         read("Do you want to go to the next room? Enter 'yes' or 'no'", False)
-        if(next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() == 'yes'):
+        if(next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() in affirmative):
             play_room(next_room)
     else:
         play_room(current_room)
