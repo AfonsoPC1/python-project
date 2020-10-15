@@ -232,10 +232,10 @@ def play_room(room):
     else:
         print("You are now in " + room["name"])
         read("You are now in " + room["name"])    
-        read("What would you like to do? Type 'explore' or 'examine'?",True)
-        #intended_action = input("What would you like to do? Type 'explore' or 'examine'?").strip()
-        print("What would you like to do? Type 'explore' or 'examine'?")
-        intended_action = voice(['explore','examine'])
+        read("What would you like to do? Type 'explore' or 'examine'?",False)
+        intended_action = input("What would you like to do? Type 'explore' or 'examine'?").strip()
+        #print("What would you like to do? Type 'explore' or 'examine'?")
+        #intended_action = voice(['explore','examine'])
         if intended_action == "explore":
             explore_room(room)
             play_room(room)
@@ -280,7 +280,7 @@ def examine_item(item_name):
     current_room = game_state["current_room"]
     next_room = ""
     output = None
-    
+    affirmative = ["Yes","yes","y","Y","yeah","affirmative"] #variations of affirmative user inputs   
     for item in object_relations[current_room["name"]]:
         if(item["name"] == item_name):
             output = "You examine " + item_name + ". "
@@ -310,7 +310,7 @@ def examine_item(item_name):
         read("The item you requested is not found in the current room.")
     if(next_room):
         read("Do you want to go to the next room? Enter 'yes' or 'no'", False)
-        if(next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() == 'yes'):
+        if(next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() in affirmative):
             play_room(next_room)
     else:
         play_room(current_room)
