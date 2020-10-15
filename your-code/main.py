@@ -117,26 +117,26 @@ outside = {
 
 #Global
 
-all_rooms = [game_room, bedroom1, bedroom2, living_room, outside]
+all_rooms = [data_room, common_area, uxui_room, web_dev_room, outside]
 
 all_doors = [door_a, door_b, door_c, door_d]
 
 # define which items/rooms are related
 
 object_relations = {
-    "game room": [couch, piano, door_a],
-    "bedroom 1": [queen_bed, door_a, door_b, door_c],
-    "bedroom 2": [double_bed, dresser, door_b],
-    "living room": [dining_table, door_c, door_d],
+    "data room": [couch, projector, door_a],
+    "common area": [table tennis, door_a, door_b, door_c],
+    "ux ui room": [white board, post it, door_b],
+    "web dev room": [computer, door_c, door_d],
     "outside": [door_b],
-    "piano": [key_a],
-    'queen bed': [key_b],
-    'double bed':[key_c],
-    'dresser': [key_d],
-    "door a": [game_room, bedroom1],
-    'door b': [bedroom1, bedroom2],
-    'door c': [bedroom1, living_room],
-    'door d': [living_room, outside],
+    "projector": [key_a],
+    'table tennis': [key_b],
+    'white board':[key_c],
+    'post it': [key_d],
+    "door a": [data_room, common area],
+    'door b': [common area, ux ui room],
+    'door c': [common area, webdev_room],
+    'door d': [webdev_room, outside],
 }
 
 # define game state. Do not directly change this dict. 
@@ -145,7 +145,7 @@ object_relations = {
 # way you can replay the game multiple times.
 
 INIT_GAME_STATE = {
-    "current_room": game_room,
+    "current_room": data_room,
     "keys_collected": [],
     "target_room": outside
 }
