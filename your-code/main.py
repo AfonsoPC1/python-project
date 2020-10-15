@@ -4,7 +4,7 @@ import speech_recognition as sr
 from gtts import gTTS 
 import os
 import playsound
-
+from IPython.display import Image, display
 
 # define rooms and item
 
@@ -12,6 +12,7 @@ import playsound
 couch = {
     "name": "couch",
     "type": "furniture",
+    "image_filename": "Images//sofa.jpg",
 }
 
 door_a = {
@@ -28,6 +29,7 @@ key_a = {
 projector = {
     "name": "projector",
     "type": "furniture",
+    "image_filename": "Images//projector.jpg",
 }
 
 data_room = {
@@ -45,6 +47,7 @@ common_area={
 table_tennis={
     'name':'table tennis',
     'type':'furniture',
+    "image_filename": "Images//table-tennis.jpg",
 }
 
 door_b = {
@@ -73,11 +76,13 @@ ux_ui_room={
 white_board={
     'name':'white board',
     'type':'furniture',
+    "image_filename": "Images//whiteboard.jpg",
 }
 
 post_it={
     'name':'post it',
     'type':'furniture',
+    "image_filename": "Images//post-its.jpg",
 }
 
 key_c = {
@@ -96,6 +101,7 @@ web_dev_room={
 computer={
     'name':'computer',
     'type':'furniture',
+    "image_filename": "Images//computer.jpg",
 }
 
 door_d = {
