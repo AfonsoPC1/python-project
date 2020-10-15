@@ -8,7 +8,7 @@ import playsound
 
 # define rooms and item
 
-#Game Room
+#Data Room, former game room
 couch = {
     "name": "couch",
     "type": "furniture",
@@ -25,25 +25,25 @@ key_a = {
     "target": door_a,
 }
 
-piano = {
-    "name": "piano",
+projector = {
+    "name": "projector",
     "type": "furniture",
 }
 
-game_room = {
-    "name": "game room",
+data_room = {
+    "name": "data room",
     "type": "room",
 }
 
-#Bedroom 1
+#Common Area, former Bedroom 1
 
-bedroom1={
-    'name':'bedroom 1',
+common_area={
+    'name':'common area',
     'type':'room',
 }
 
-queen_bed={
-    'name':'queen bed',
+table_tennis={
+    'name':'table tennis',
     'type':'furniture',
 }
 
@@ -63,20 +63,20 @@ door_c = {
     "type": "door",
 }
 
-#Bedroom 2
+#UX/UI room, former Bedroom 2
 
-bedroom2={
-    "name": "bedroom 2",
+ux_ui_room={
+    "name": "ux ui room",
     "type": "room",
 }
 
-double_bed={
-    'name':'double bed',
+white_board={
+    'name':'white board',
     'type':'furniture',
 }
 
-dresser={
-    'name':'dresser',
+post_it={
+    'name':'post it',
     'type':'furniture',
 }
 
@@ -86,15 +86,15 @@ key_c = {
     "target": door_c,
 }
 
-#Living Room
+#web dev room, former Living Room
 
-living_room={
-    "name": "living room",
+web_dev_room={
+    "name": "web dev room",
     "type": "room",
 }
 
-dining_table={
-    'name':'dining table',
+computer={
+    'name':'computer',
     'type':'furniture',
 }
 
