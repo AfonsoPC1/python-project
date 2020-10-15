@@ -123,7 +123,7 @@ outside = {
 
 #Global
 
-all_rooms = [data_room, common_area, uxui_room, web_dev_room, outside]
+all_rooms = [data_room, common_area, ux_ui_room, web_dev_room, outside]
 
 all_doors = [door_a, door_b, door_c, door_d]
 
@@ -131,18 +131,18 @@ all_doors = [door_a, door_b, door_c, door_d]
 
 object_relations = {
     "data room": [couch, projector, door_a],
-    "common area": [table tennis, door_a, door_b, door_c],
-    "ux ui room": [white board, post it, door_b],
-    "web dev room": [computer, door_c, door_d],
+    "common area": [table_tennis, door_a, door_b, door_c, door_d],
+    "ux ui room": [white_board, post_it, door_b],
+    "web dev room": [computer, door_c],
     "outside": [door_b],
     "projector": [key_a],
     'table tennis': [key_b],
     'white board':[key_c],
-    'post it': [key_d],
-    "door a": [data_room, common area],
-    'door b': [common area, ux ui room],
-    'door c': [common area, webdev_room],
-    'door d': [webdev_room, outside],
+    'computer': [key_d],
+    "door a": [data_room, common_area],
+    'door b': [common_area, ux_ui_room],
+    'door c': [common_area, web_dev_room],
+    'door d': [common_area, outside],
 }
 
 # define game state. Do not directly change this dict. 
@@ -216,8 +216,9 @@ def start_game():
     """
     Start the game
     """
-    print("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before. You don't remember why you are here and what had happened before. You feel some unknown danger is approaching and you must get out of the house, NOW!")
-    #read("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before. You don't remember why you are here and what had happened before. You feel some unknown danger is approaching and you must get out of the house, NOW!")
+    display(Image(filename="Images//ironhack.PNG"))
+    print("You were coding until late and you fell asleep. Everyone else has left the building. You wake up on the couch of the data room, and now you need to find a way to get out of Ironhack. Good luck!")
+    read("You were coding until late and you fell asleep. Everyone else has left the building. You wake up on the couch of the data room, and now you need to find a way to get out of Ironhack. Good luck!")
     play_room(game_state["current_room"])
 
 def play_room(room):
@@ -228,22 +229,22 @@ def play_room(room):
     """
     game_state["current_room"] = room
     if(game_state["current_room"] == game_state["target_room"]):
-        print("Congrats! You escaped the room!")
-        read("Congrats! You escaped the room!")
+        print("Congrats! You escaped Ironhack, you are free to go to your bed. More python will be wating for you tomorrow!")
+        read("Congrats! You escaped Ironhack, you are free to go to your bed. More python will be wating for you tomorrow!")
         playsound.playsound('sound//stage-clear.wav',True)
     else:
         print("You are now in " + room["name"])
-        read("You are now in " + room["name"]) 
+        #read("You are now in " + room["name"]) 
         print("What would you like to do? Say '0' if you want to 'explore' or '1' if you want to 'examine'?")
         read("What would you like to do? Say '0' if you want to 'explore' or '1' if you want to 'examine'?",True)
-        #intended_action = input("What would you like to do? Type 'explore' or 'examine'?").strip()
+        #intended_action = input("What would you like to do? Type '0' to 'explore' or '1' to 'examine'?").strip()
         intended_action = voice()  
         if intended_action == '0':
             explore_room(room)
             play_room(room)
         elif intended_action == '1':
-            read("What would you like to examine?",False)
-            examine_item(input("What would you like to examine?").strip())
+            read("What would you like to examine? Please type.",False)
+            examine_item(input("What would you like to examine? Please type: ").strip())
         else:
             print("Not sure what you mean.")
             read("Not sure what you mean.")
@@ -282,7 +283,7 @@ def examine_item(item_name):
     current_room = game_state["current_room"]
     next_room = ""
     output = None
-    affirmative = ["Yes","yes","y","Y","yeah","affirmative"] #variations of affirmative user inputs   
+#    affirmative = ["Yes","yes","y","Y","yeah","affirmative"] #variations of affirmative user inputs   
     for item in object_relations[current_room["name"]]:
         if(item["name"] == item_name):
             output = "You examine " + item_name + ". "
@@ -298,6 +299,7 @@ def examine_item(item_name):
                 else:
                     output += "It is locked but you don't have the key."
             else:
+                display(Image(filename=item["image_filename"]))
                 if(item["name"] in object_relations and len(object_relations[item["name"]])>0):
                     item_found = object_relations[item["name"]].pop()
                     game_state["keys_collected"].append(item_found)
@@ -314,8 +316,10 @@ def examine_item(item_name):
         read("The item you requested is not found in the current room.")
     if(next_room):
         read("Do you want to go to the next room? Enter 'yes' or 'no'", False)
-        if(next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() in affirmative):
+        if(next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() == "yes"):
             play_room(next_room)
+        else:
+            play_room(current_room)    
     else:
         play_room(current_room)
         
